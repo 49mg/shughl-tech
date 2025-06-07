@@ -1,0 +1,13 @@
+/* src/style.css */
+/* This file will contain your custom CSS and Tailwind directives. */
+/* Tailwind will process this file to generate the final CSS. */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add any additional custom CSS rules here */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}

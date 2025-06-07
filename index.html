@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="siteTitle"></title> <!-- العنوان سيتم تعيينه ديناميكيًا من config.js -->
+    <!-- Tailwind CSS CDN (لتسهيل التطوير؛ للإنتاج، يجب بناء ملف CSS) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter لخطوط عصرية واحترافية -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* منع التحديد لبعض العناصر إذا لم يكن مطلوبًا */
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+ */
+            user-select: none; /* Standard */
+        }
+        /* تحريكات مخصصة */
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .animate-fade-in-scale {
+            animation: fadeInScale 0.7s ease-out forwards;
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        /* أنماط مخصصة لإضفاء طابع احترافي إضافي */
+        .gradient-bg-hero {
+            background: linear-gradient(to right, #1a2b5b, #1b73b5); /* ألوان أعمق وأكثر احترافية */
+        }
+        .shadow-custom-blue {
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2), 0 4px 6px -2px rgba(37, 99, 235, 0.1); /* ظل أزرق خفيف */
+        }
+        .list-item-icon {
+            flex-shrink: 0; /* منع الأيقونة من الانكماش */
+            margin-left: 0.75rem; /* مسافة على اليسار ليتناسب مع اتجاه RTL */
+            color: #2563eb; /* لون أزرق جذاب */
+        }
+
+        /* أنماط لأزرار الفئات */
+        .category-button {
+            /* تطبيق Tailwind CSS classes مباشرة هنا */
+            padding: 0.75rem 1.5rem; /* px-6 py-2 */
+            border-radius: 9999px; /* rounded-full */
+            font-weight: 600; /* font-semibold */
+            font-size: 1rem; /* تم تقليل حجم الخط من 1.125rem */
+            transition-property: all; /* transition-all */
+            transition-duration: 300ms; /* duration-300 */
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* ease-in-out */
+            cursor: pointer;
+        }
+        .category-button-active {
+            /* تطبيق Tailwind CSS classes مباشرة هنا */
+            background-color: #2563eb; /* bg-blue-600 */
+            color: #ffffff; /* text-white */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+            border-width: 1px;
+            border-color: #2563eb; /* border-blue-600 */
+            transform: scale(1.05); /* transform scale-105 */
+        }
+        .category-button-inactive {
+            /* تطبيق Tailwind CSS classes مباشرة هنا */
+            background-color: #ffffff; /* bg-white */
+            color: #2563eb; /* text-blue-600 */
+            border-width: 1px;
+            border-color: #60a5fa; /* border-blue-400 */
+            opacity: 1; /* إزالة opacity: 80% لتتناسب مع التغيير المطلوب */
+        }
+        /* Hover styles for inactive buttons */
+        .category-button-inactive:hover {
+            background-color: #eff6ff; /* hover:bg-blue-50 */
+            color: #1d4ed8; /* hover:text-blue-700 */
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* hover:shadow-sm */
+            transform: scale(1.02); /* hover:scale-102 */
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+<!-- قسم الرأس (Header) -->
+<header class="bg-white shadow-md py-4">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+        <!-- تم حذف شعار الشركة واسمها بناءً على طلبك -->
+        <div class="flex items-center">
+            <span id="companyName" class="text-2xl font-extrabold text-blue-700"></span>
+        </div>
+        <!-- روابط التنقل (مخفية على الشاشات الصغيرة، يمكن توسيعها للتنقل في الجوال) -->
+        <nav id="navbarNav" class="hidden md:flex space-x-8">
+            <!-- الروابط سيتم توليدها هنا ديناميكيًا -->
+        </nav>
+        <!-- زر تبديل التنقل للجوال (placeholder) -->
+        <button class="md:hidden text-gray-600 hover:text-blue-600 focus:outline-none">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+        </button>
+    </div>
+</header>
+
+<!-- قسم الأبطال (Hero Section) -->
+<section class="gradient-bg-hero text-white py-24 md:py-40 text-center shadow-lg">
+    <div class="container mx-auto px-4 max-w-4xl">
+        <h1 id="heroHeading" class="text-3xl md:text-5xl font-extrabold mb-8 leading-tight animate-fade-in-scale">
+            <!-- العنوان سيتم تعيينه ديناميكيًا -->
+        </h1>
+        <p id="heroSubheading" class="text-base md:text-lg mb-12 max-w-3xl mx-auto opacity-90 animate-fade-in-scale delay-200 font-light">
+            <!-- النص سيتم تعيينه ديناميكيًا -->
+        </p>
+        <a
+                id="heroButton"
+                href="#"
+                class="inline-block bg-white text-blue-700 hover:bg-blue-100 px-10 py-4 rounded-full text-lg font-bold transition-all duration-300 transform hover:scale-105 shadow-xl shadow-custom-blue animate-fade-in-scale delay-400"
+        >
+            <!-- نص الزر سيتم تعيينه ديناميكيًا -->
+        </a>
+    </div>
+</section>
+
+<!-- قسم "من نحن" (About Section) -->
+<section id="about" class="py-20 md:py-32 bg-white">
+    <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-16">
+        <div class="md:w-1/2 text-center md:text-right order-2 md:order-1">
+            <h2 id="aboutHeading" class="text-3xl md:text-4xl font-bold text-gray-800 mb-8">
+                <!-- العنوان سيتم تعيينه ديناميكيًا -->
+            </h2>
+            <ul id="aboutPoints" class="space-y-12 text-base text-gray-700">
+                <!-- النقاط سيتم توليدها هنا ديناميكيًا -->
+            </ul>
+        </div>
+        <div class="md:w-1/2 flex justify-center order-1 md:order-2">
+            <!-- صورة قسم "من نحن" -->
+            <img
+                    id="aboutImage"
+                    src=""
+                    alt="About ShaghlTech - Our Process"
+                    class="rounded-xl shadow-2xl w-full max-w-md h-auto object-cover transform hover:scale-102 transition-transform duration-300"
+            />
+        </div>
+    </div>
+</section>
+
+<!-- قسم "لماذا تختارنا؟" (Why Choose Us Section) -->
+<section id="why-choose-us" class="py-20 md:py-32 bg-blue-50 text-gray-800">
+    <div class="container mx-auto px-4 text-center">
+        <h2 id="whyChooseUsHeading" class="text-3xl md:text-4xl font-bold text-gray-800 mb-16">
+            <!-- العنوان سيتم تعيينه ديناميكيًا -->
+        </h2>
+        <div id="whyChooseUsFeatures" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
+            <!-- الميزات سيتم توليدها هنا ديناميكيًا -->
+        </div>
+    </div>
+</section>
+
+<!-- قسم الخدمات (Services Section) -->
+<section id="services" class="bg-gray-100 py-20 md:py-32">
+    <div class="container mx-auto px-4 text-center">
+        <h2 id="servicesHeading" class="text-3xl md:text-4xl font-bold text-gray-800 mb-16">
+            <!-- العنوان سيتم تعيينه ديناميكيًا -->
+        </h2>
+        <div id="servicesItems" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <!-- الخدمات سيتم توليدها هنا ديناميكيًا -->
+        </div>
+    </div>
+</section>
+
+<!-- قسم أعمالنا ومشاريعنا (Our Portfolio Section) -->
+<section id="portfolio" class="py-20 md:py-32 bg-white">
+    <div class="container mx-auto px-4 text-center">
+        <h2 id="portfolioHeading" class="text-3xl md:text-4xl font-bold text-gray-800 mb-16">
+            <!-- العنوان سيتم تعيينه ديناميكيًا -->
+        </h2>
+
+        <!-- أزرار الفئات -->
+        <div id="portfolioCategories" class="flex flex-wrap justify-center gap-4 mb-12">
+            <!-- أزرار الفئات سيتم توليدها هنا ديناميكيًا -->
+        </div>
+
+        <div id="portfolioProjects" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <!-- المشاريع سيتم توليدها هنا ديناميكيًا -->
+        </div>
+        <a
+                id="portfolioButton"
+                href="#"
+                class="inline-block mt-16 bg-blue-600 text-white hover:bg-blue-700 px-10 py-4 rounded-full text-lg font-bold transition-all duration-300 transform hover:scale-105 shadow-xl shadow-custom-blue"
+        >
+            <!-- نص الزر سيتم تعيينه ديناميكيًا -->
+        </a>
+    </div>
+</section>
+
+
+<!-- قسم التواصل (Contact Section) -->
+<section id="contact" class="py-20 md:py-32 bg-blue-700 text-white">
+    <div class="container mx-auto px-4 text-center max-w-4xl">
+        <h2 id="contactHeading" class="text-3xl md:text-4xl font-bold mb-10">
+            <!-- العنوان سيتم تعيينه ديناميكيًا -->
+        </h2>
+        <p id="contactSubheading" class="text-base md:text-lg mb-12 opacity-95 leading-relaxed">
+            <!-- النص سيتم تعيينه ديناميكيًا -->
+        </p>
+        <!-- تم تغيير طريقة عرض معلومات التواصل لتحسين الترتيب -->
+        <div id="contactInfo" class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 justify-items-center">
+            <!-- معلومات التواصل سيتم توليدها هنا ديناميكيًا -->
+        </div>
+        <div class="mt-16">
+            <!-- صورة رمز QR - يمكن استخدام أيقونة QR code SVG لتحسين الجودة -->
+            <img
+                    id="qrCodeImage"
+                    src=""
+                    alt="QR Code for Contact"
+                    class="mx-auto rounded-lg shadow-xl transform hover:scale-105 transition-transform duration-300"
+            />
+            <p id="qrCodeText" class="mt-6 text-sm opacity-90 font-light">
+                <!-- نص QR Code سيتم تعيينه ديناميكيًا -->
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- قسم التذييل (Footer Section) -->
+<footer class="bg-gray-900 text-white py-8">
+    <div class="container mx-auto px-4 text-center text-sm">
+        <p class="mb-2">&copy; <span id="currentYear"></span> <span id="copyrightText"></span></p>
+        <p id="designedByText" class="opacity-80"></p>
+    </div>
+</footer>
+
+<!-- JavaScript لجلب البيانات من config.js وتعبئة الواجهة -->
+<script type="module">
+    // استيراد websiteConfig من ملف config.js
+    // تأكد من أن المسار إلى ملف config.js صحيح بالنسبة لموقع ملف HTML هذا.
+    // إذا كان ملف config.js في نفس المجلد، سيكون المسار './config.js'
+    // إذا كان في مجلد src داخل المجلد الرئيسي، فسيكون المسار '../src/config.js'
+    import { websiteConfig } from './src/config.js';
+
+    // وظيفة لتوليد وعرض المشاريع
+    function renderProjects(category = 'all') {
+        const portfolioProjectsDiv = document.getElementById('portfolioProjects');
+        portfolioProjectsDiv.innerHTML = ''; // مسح المشاريع الحالية
+
+        // فلترة المشاريع بناءً على الفئة
+        const filteredProjects = category === 'all'
+            ? websiteConfig.portfolio.projects
+            : websiteConfig.portfolio.projects.filter(project => project.category === category);
+
+        filteredProjects.forEach(project => {
+            const div = document.createElement('div');
+            div.className = 'bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-102 transition-transform duration-300 border border-gray-100';
+            div.innerHTML = `
+                    <img src="${project.imagePlaceholder}" alt="${project.altText}" class="w-full h-56 object-cover"/>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-blue-700 mb-3">${project.title}</h3>
+                        <p class="text-base text-gray-700 mb-4 leading-relaxed">${project.description}</p>
+                        <a href="${project.detailsLink}" class="text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors duration-200">عرض التفاصيل &rarr;</a>
+                    </div>
+                `;
+            portfolioProjectsDiv.appendChild(div);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // تحديث العنوان الرئيسي للموقع
+        document.getElementById('siteTitle').textContent = websiteConfig.siteTitle;
+
+        // تحديث معلومات الرأس (Header)
+        document.getElementById('companyName').textContent = websiteConfig.companyName;
+
+
+        // توليد روابط التنقل
+        const navBar = document.getElementById('navbarNav');
+        websiteConfig.navLinks.forEach(link => {
+            const a = document.createElement('a');
+            a.href = link.href;
+            a.className = 'text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 rounded-md';
+            a.textContent = link.text;
+            navBar.appendChild(a);
+        });
+
+        // تعبئة قسم الأبطال (Hero Section)
+        document.getElementById('heroHeading').textContent = websiteConfig.hero.heading;
+        document.getElementById('heroSubheading').textContent = websiteConfig.hero.subheading;
+        const heroButton = document.getElementById('heroButton');
+        heroButton.textContent = websiteConfig.hero.buttonText;
+        heroButton.href = websiteConfig.hero.buttonLink;
+
+        // تعبئة قسم "من نحن" (About Section)
+        document.getElementById('aboutHeading').textContent = websiteConfig.about.heading;
+        document.getElementById('aboutImage').src = websiteConfig.about.imagePlaceholder;
+        const aboutPointsList = document.getElementById('aboutPoints');
+        websiteConfig.about.points.forEach(point => {
+            const li = document.createElement('li');
+            li.className = 'flex items-start';
+            li.innerHTML = `
+                    <span class="text-blue-600 text-4xl leading-none list-item-icon">${point.icon}</span>
+                    <div>
+                        <strong class="block text-gray-900 font-semibold mb-3">${point.title}</strong>
+                        ${point.description}
+                    </div>
+                `;
+            aboutPointsList.appendChild(li);
+        });
+
+        // تعبئة قسم "لماذا تختارنا؟" (Why Choose Us Section)
+        document.getElementById('whyChooseUsHeading').textContent = websiteConfig.whyChooseUs.heading;
+        const whyChooseUsFeaturesDiv = document.getElementById('whyChooseUsFeatures');
+        websiteConfig.whyChooseUs.features.forEach(feature => {
+            const div = document.createElement('div');
+            div.className = 'bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2 border border-blue-100';
+            div.innerHTML = `
+                    <svg class="w-12 h-12 text-blue-600 mb-8 mx-auto" fill="currentColor" viewBox="0 0 24 24"><path d="${feature.iconPath}"/></svg>
+                    <h3 class="text-xl font-semibold text-blue-700 mb-4">${feature.title}</h3>
+                    <p class="text-base text-gray-700 leading-relaxed">${feature.description}</p>
+                `;
+            whyChooseUsFeaturesDiv.appendChild(div);
+        });
+
+        // تعبئة قسم الخدمات (Services Section)
+        document.getElementById('servicesHeading').textContent = websiteConfig.services.heading;
+        const servicesItemsDiv = document.getElementById('servicesItems');
+        websiteConfig.services.items.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2 border border-gray-100';
+            div.innerHTML = `
+                    <h3 class="text-xl font-semibold text-blue-700 mb-4">${item.title}</h3>
+                    <p class="text-base text-gray-700 leading-relaxed">${item.description}</p>
+                `;
+            servicesItemsDiv.appendChild(div);
+        });
+
+        // توليد أزرار الفئات لأعمالنا ومشاريعنا
+        const portfolioCategoriesDiv = document.getElementById('portfolioCategories');
+        websiteConfig.portfolio.categories.forEach(cat => {
+            const button = document.createElement('button');
+            button.textContent = cat.name;
+            button.setAttribute('data-category', cat.id);
+            // إضافة الفئة 'category-button' هنا لتمكين JavaScript من تحديد جميع الأزرار
+            button.className = 'category-button ' + (cat.id === 'all' ? 'category-button-active' : 'category-button-inactive');
+
+            button.addEventListener('click', (event) => {
+                // إزالة الفئة النشطة من جميع الأزرار وتطبيق الفئة غير النشطة
+                document.querySelectorAll('.category-button').forEach(btn => {
+                    btn.classList.remove('category-button-active');
+                    btn.classList.add('category-button-inactive');
+                });
+                // إضافة الفئة النشطة للزر الحالي
+                event.target.classList.remove('category-button-inactive');
+                event.target.classList.add('category-button-active');
+                renderProjects(cat.id); // إعادة عرض المشاريع بناءً على الفئة الجديدة
+            });
+            portfolioCategoriesDiv.appendChild(button);
+        });
+
+        // تعبئة وعرض المشاريع لأول مرة (عرض الكل)
+        renderProjects('all');
+
+        const portfolioButton = document.getElementById('portfolioButton');
+        portfolioButton.textContent = websiteConfig.portfolio.moreProjectsButtonText;
+        portfolioButton.href = '#contact'; // يمكن تغيير هذا الرابط إذا كان هناك صفحة "أعمالنا" منفصلة
+
+        // تعبئة قسم التواصل (Contact Section)
+        document.getElementById('contactHeading').textContent = websiteConfig.contact.heading;
+        document.getElementById('contactSubheading').textContent = websiteConfig.contact.subheading;
+        const contactInfoDiv = document.getElementById('contactInfo');
+        websiteConfig.contact.contactInfo.forEach(info => {
+            const div = document.createElement('div');
+            div.className = 'flex flex-col items-center text-center p-4';
+
+            // تحقق إذا كان النص هو رقم الهاتف وأضف dir="ltr"
+            let paragraphContent = `<p class="text-lg font-medium tracking-wide">${info.text}</p>`;
+            if (info.text.startsWith('+964')) { // تحديد رقم الهاتف بناءً على البداية
+                paragraphContent = `<p class="text-lg font-medium tracking-wide" dir="ltr">${info.text}</p>`;
+            }
+
+            div.innerHTML = `
+                    <svg class="w-8 h-8 mb-2 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="${info.iconPath}"/></svg>
+                    ${paragraphContent}
+                `;
+            contactInfoDiv.appendChild(div);
+        });
+        document.getElementById('qrCodeImage').src = websiteConfig.contact.qrCodePlaceholder;
+        document.getElementById('qrCodeText').textContent = websiteConfig.contact.qrCodeText;
+
+
+        // تعبئة قسم التذييل (Footer Section)
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        document.getElementById('copyrightText').textContent = websiteConfig.footer.copyrightText;
+        document.getElementById('designedByText').textContent = websiteConfig.footer.designedByText;
+
+        // منطق تبديل قائمة التنقل للجوال (إذا تم تطبيقها في المستقبل)
+        const mobileMenuButton = document.querySelector('header button.md\\:hidden');
+        const navLinks = document.querySelector('header nav');
+
+        if (mobileMenuButton && navLinks) {
+            mobileMenuButton.addEventListener('click', () => {
+                console.log('Mobile menu button clicked!');
+                // مثال على كيفية تبديل فئة لإظهار/إخفاء القائمة
+                // navLinks.classList.toggle('hidden');
+                // navLinks.classList.toggle('flex');
+                // قد تحتاج إلى إضافة أنماط لـ flex-col و fixed/absolute positioning للقائمة المنسدلة
+            });
+        }
+
+        // إضافة تأثيرات التلاشي والتحجيم عند التمرير
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in-scale');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.animate-fade-in-scale').forEach(element => {
+            element.classList.remove('animate-fade-in-scale');
+            observer.observe(element);
+        });
+    });
+</script>
+</body>
+</html>
