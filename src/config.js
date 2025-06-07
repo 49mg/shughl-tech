@@ -51,7 +51,7 @@ export const websiteConfig = {
                 description: 'نهتم بالشغل كلش هواي حتى يطلع مضبوط وما بيه أي نقص.',
             },
         ],
-        imagePlaceholder: '../assets/images/Square@4x.png',
+        imagePlaceholder: './assets/images/Square@4x.png',
     },
 
     // قسم "لماذا تختارنا؟" (Why Choose Us Section)
@@ -214,7 +214,7 @@ export const websiteConfig = {
             { iconPath: 'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z', text: 'IRAQ, BAGHDAD AL-SINAA' },
             { iconPath: 'M20 15.5c-1.25 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.01.24l-2.05 2.05c-4.74-2.39-8.19-5.83-10.58-10.57l2.05-2.05c.27-.27.35-.66.24-1.01C8.75 3.45 8.55 2.25 8.55 1h-7c-.55 0-1 .45-1 1C.45 11.19 8.81 19.55 19 19.55c.55 0 1-.45 1-1v-7z', text: '+964 783 700 7044' },
         ],
-        qrCodePlaceholder: "../assets/images/qr_code.png",
+        qrCodePlaceholder: "./assets/images/qr_code.png",
         qrCodeText: 'امسح الكود للتواصل الفوري معنا',
     },
 
